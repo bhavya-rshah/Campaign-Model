@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 ##############################################################
-# SECTION 1: POLLS (FRACTION SCALE CONSISTENT)
+# SECTION 1: Raw polls added
 ##############################################################
 
 polls = pd.DataFrame([
@@ -15,7 +15,7 @@ polls = pd.DataFrame([
     {"pollster": "C", "support": 0.50, "days_old": 5, "sample": 1200, "quality_rating": 0.95,
      "house_effect": 0.00, "mode_adjustment": 0.00}
 ])
-
+#here we take the support value subtract house effect and add mode adjustment like tv phone online
 polls["adjusted_support"] = (
     polls["support"]
     - polls["house_effect"]
@@ -53,7 +53,7 @@ print("Weighted poll support:",
       round(weighted_support * 100, 2), "%")
 
 ##############################################################
-# SECTION 3: MOMENTUM (FULLY DATA-DRIVEN)
+# SECTION 3: MOMENTUM 
 ##############################################################
 
 # -----------------------------------
