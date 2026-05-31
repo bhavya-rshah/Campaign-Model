@@ -43,12 +43,19 @@ segment_support = (
     /
     (segments["turnout_prob"] * segments["population_weight"]).sum()
 )
-
 ##############################################################
-# SECTION 3
+# SECTION 3: MOMENTUM (DATA-DRIVEN)
 ##############################################################
 
-recent_poll_trend = 0.8 / 100  # FIX: convert to fraction scale
+recent_cutoff = 5
+
+recent = polls[polls["days_old"] <= recent_cutoff]
+older = polls[polls["days_old"] > recent_cutoff]
+
+recent_avg = np.average(recent["adjusted_support"])
+older_avg = np.average(older["adjusted_support"])
+
+recent_poll_trend = (recent_avg - older_avg) * 0.2
 
 ##############################################################
 # SECTION 4
