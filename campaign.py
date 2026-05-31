@@ -47,15 +47,28 @@ segment_support = (
 # SECTION 3: MOMENTUM (DATA-DRIVEN)
 ##############################################################
 
-recent_cutoff = 5
+# -----------------------------
+# Prepare time + support data
+# -----------------------------
+# We flip time so newer polls have higher influence direction
+x = -polls["days_old"].values
+y = polls["adjusted_support"].values
 
-recent = polls[polls["days_old"] <= recent_cutoff]
-older = polls[polls["days_old"] > recent_cutoff]
+# -----------------------------
+# Weighted regression (optional but more realistic)
+# Recent polls get more influence
+# -----------------------------
+weights = 1 / (1 + polls["days_old"].values)
 
-recent_avg = np.average(recent["adjusted_support"])
-older_avg = np.average(older["adjusted_support"])
+# Fit linear trend line: y = a + b*x
+slope, intercept = np.polyfit(x, y, 1, w=weights)
 
-recent_poll_trend = (recent_avg - older_avg) * 0.2
+# -----------------------------
+# Momentum signal
+# -----------------------------
+recent_poll_trend = slope
+
+print("Momentum (trend slope):", round(recent_poll_trend, 6))
 
 ##############################################################
 # SECTION 4
